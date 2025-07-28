@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# makes sure git ignores the .env to keep it a secret
+.env 

@@ -9,10 +9,13 @@ import History from './components/History';
 import Layout from './components/Layout';
 import Modal from './components/Modal';
 import Stats from './components/Stats';
+import { useAuth } from './context/AuthContext';
 
 function App() {
   // authentication
-  const isAuthenticated = false;
+  const { globalUser, globalData, isLoading } = useAuth()
+  const isAuthenticated = !!globalUser
+  const isData = globalData && !!Object.keys(globalData || {}).length // second is falsey value to check if there is data, otherwise isData will have nothing
 
   const authenticatedContent = (
     <>
@@ -24,8 +27,9 @@ function App() {
   return (
     <Layout>
       <Hero />
-      <CoffeeForm />
-      {isAuthenticated && (authenticatedContent)}
+      <CoffeeForm isAuthenticated={isAuthenticated} />
+      {(isLoading && isAuthenticated) && (<p>Loading data...</p>)}
+      {(isAuthenticated && isData) && (authenticatedContent)}
     </Layout>
   )
 }
